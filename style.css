@@ -7,7 +7,7 @@ body {
 
 header {
   background: #020617;
-  padding: 15px;
+  padding: 10px;
   text-align: center;
   border-bottom: 2px solid #1e293b;
 }
@@ -91,3 +91,45 @@ video {
 .filters button:hover {
   background: #1d4ed8;
 }
+/* ===============================
+   MOBILE VIEW (PHONES)
+   =============================== */
+@media (max-width: 768px) {
+
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Filters on top */
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #1e293b;
+  }
+
+  .filters {
+    flex-direction: column;
+  }
+
+  /* Video below filters */
+  .player {
+    width: 100%;
+    padding: 10px;
+  }
+
+  video {
+    height: 220px;
+  }
+
+  /* Channel list at bottom */
+  #channelList {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  header h1 {
+    font-size: 18px;
+  }
+}
+
