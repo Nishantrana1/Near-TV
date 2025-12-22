@@ -1,57 +1,92 @@
+/* ================= GLOBAL ================= */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
+  background: linear-gradient(180deg, #020617, #020617);
+  color: #e5e7eb;
 }
 
 header {
-  background: #020617;
-  padding: 10px;
+  background: linear-gradient(90deg, #132b55, #0d1454);
+  padding: 12px;
   text-align: center;
-  border-bottom: 2px solid #1e293b;
+  border-bottom: 1px solid #1e293b;
 }
 
+/* ================= LAYOUT ================= */
 .container {
   display: flex;
   height: calc(100vh - 70px);
 }
 
-/* Sidebar */
+/* ================= SIDEBAR ================= */
 .sidebar {
   width: 30%;
   background: #020617;
-  padding: 10px;
+  padding: 12px;
   overflow-y: auto;
-  border-right: 2px solid #1e293b;
+  border-right: 1px solid #1e293b;
 }
 
-.sidebar input {
-  width: 95%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: none;
-}
-
+/* REMOVE BULLETS COMPLETELY */
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
+/* CHANNEL ITEM */
 .sidebar li {
-  padding: 10px;
-  margin-bottom: 5px;
-  background: #1e293b;
-  cursor: pointer;
-  border-radius: 5px;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+
+  background: linear-gradient(90deg, #0f172a, #020617);
+  color: #e5e7eb;
+
+  cursor: pointer !important;
+  user-select: none;
+
+  font-size: 14px;
+  letter-spacing: 0.3px;
+
+  transition: 
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
 }
 
+/* 🔥 FORCE HAND CURSOR EVERYWHERE */
+.sidebar li,
+.sidebar li * {
+  cursor: pointer !important;
+}
+
+/* ✨ GLOW EFFECT ON HOVER */
 .sidebar li:hover {
-  background: #334155;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+  color: #ffffff;
+
+  box-shadow:
+    0 0 8px rgba(37, 99, 235, 0.6),
+    inset 0 0 6px rgba(255, 255, 255, 0.15);
+
+  transform: translateX(6px);
 }
 
-/* Player */
+/* TAP / CLICK FEEDBACK */
+.sidebar li:active {
+  transform: scale(0.97);
+}
+
+/* 🎯 CURRENTLY PLAYING */
+.sidebar li.active {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+}
+
+/* ================= PLAYER ================= */
 .player {
   width: 70%;
   padding: 15px;
@@ -61,25 +96,29 @@ video {
   width: 100%;
   height: 75%;
   background: black;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 #nowPlaying {
-  margin-top: 10px;
+  margin-top: 8px;
   color: #94a3b8;
 }
+
+/* ================= FILTERS ================= */
 .filters {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
+.filters input,
 .filters select,
 .filters button {
-  padding: 8px;
-  border-radius: 5px;
+  padding: 9px;
+  border-radius: 6px;
   border: none;
+  font-size: 14px;
 }
 
 .filters button {
@@ -91,28 +130,20 @@ video {
 .filters button:hover {
   background: #1d4ed8;
 }
-/* ===============================
-   MOBILE VIEW (PHONES)
-   =============================== */
-@media (max-width: 768px) {
 
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
   .container {
     flex-direction: column;
     height: auto;
   }
 
-  /* Filters on top */
   .sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 2px solid #1e293b;
+    border-bottom: 1px solid #1e293b;
   }
 
-  .filters {
-    flex-direction: column;
-  }
-
-  /* Video below filters */
   .player {
     width: 100%;
     padding: 10px;
@@ -122,14 +153,122 @@ video {
     height: 220px;
   }
 
-  /* Channel list at bottom */
+  #channelList {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+/* === FORCE FIX FOR CHANNEL LIST === */
+
+#channelList {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#channelList li {
+  list-style: none !important;
+
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+
+  background: #1e293b;
+  color: #ffffff;
+
+  cursor: pointer !important;
+  user-select: none !important;
+
+  font-size: 14px;
+  letter-spacing: 0.4px;
+
+  transition: background 0.2s ease,
+              box-shadow 0.2s ease,
+              transform 0.2s ease;
+}
+
+/* REMOVE TEXT CURSOR COMPLETELY */
+#channelList li,
+#channelList li * {
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+/* HOVER GLOW */
+#channelList li:hover {
+  background: #2563eb;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.8);
+  transform: translateX(6px);
+}
+
+/* CLICK FEEDBACK */
+#channelList li:active {
+  transform: scale(0.96);
+}
+
+
+
+
+
+
+/* ================= FIX SCROLL BEHAVIOR ================= */
+
+/* Lock the main layout */
+.container {
+  display: flex;
+  height: calc(100vh - 70px); /* header height */
+  overflow: hidden;           /* stop page scrolling */
+}
+
+/* Sidebar layout */
+.sidebar {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;           /* sidebar itself does NOT scroll */
+}
+
+/* Filters stay fixed */
+.filters {
+  flex-shrink: 0;
+}
+
+/* ONLY channel list scrolls */
+#channelList {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* Player stays in place */
+.player {
+  width: 70%;
+  height: 100%;
+  padding: 15px;
+  position: relative;         /* stable, no scrolling */
+}
+
+/* ================= MOBILE BEHAVIOR ================= */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
   #channelList {
     max-height: 300px;
     overflow-y: auto;
   }
 
-  header h1 {
-    font-size: 18px;
+  .player {
+    width: 100%;
+    height: auto;
   }
 }
-

@@ -71,37 +71,69 @@ async function loadData() {
       };
     });
 
-  renderChannels(allPlayableChannels.slice(0, 200));
+  /* 🔥 Set default filters: India + Music */
+countrySelect.value = "IN";
+categorySelect.value = "music";
+
+/* Apply default filter automatically */
+applyFilters();
+
 }
 
 /* Render list */
 function renderChannels(list) {
   channelList.innerHTML = "";
+
   list.forEach(ch => {
     const li = document.createElement("li");
-    li.textContent = `${ch.name} (${ch.countryName})`;
-    li.onclick = () => playChannel(ch.url, ch.name);
+    li.innerHTML = `<span>${ch.name} (${ch.countryName})</span>`;
+    li.addEventListener("click", () => {
+      playChannel(ch.url, ch.name);
+
+      // Remove active from all
+      document.querySelectorAll(".sidebar li")
+        .forEach(item => item.classList.remove("active"));
+
+      // Add active to clicked one
+      li.classList.add("active");
+    });
+
     channelList.appendChild(li);
   });
 }
 
+
 /* Play channel */
 function playChannel(url, name) {
-  if (hls) hls.destroy();
+  if (hls) {
+    hls.destroy();
+  }
 
   if (Hls.isSupported()) {
     hls = new Hls();
     hls.loadSource(url);
     hls.attachMedia(video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      video.play().catch(() => {
+        console.log("Autoplay blocked by browser");
+      });
+    });
+
   } else {
     video.src = url;
+    video.play().catch(() => {
+      console.log("Autoplay blocked by browser");
+    });
   }
 
   nowPlaying.textContent = "Now Playing: " + name;
 }
 
-/* Search + Filter */
-searchBtn.addEventListener("click", () => {
+
+
+
+function applyFilters() {
   const text = searchInput.value.toLowerCase();
   const country = countrySelect.value;
   const category = categorySelect.value;
@@ -116,7 +148,12 @@ searchBtn.addEventListener("click", () => {
   });
 
   renderChannels(filtered.slice(0, 200));
-});
+}
+
+
+/* Search + Filter */
+searchBtn.addEventListener("click", applyFilters);
+
 
 /* Utility */
 function capitalize(str) {
